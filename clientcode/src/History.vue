@@ -1,10 +1,16 @@
 <template>
   <HelloWorld />
   <div class="history">
-    <h3>Feature is coming soon</h3>
+    <h3>
+      This page will have the history of the Pixel art created at the end of the
+      day
+    </h3>
     <ul>
       <li v-for="(singleData, index) in dateRange" :key="index">
-        {{ singleData }}
+        <router-link
+          :to="{ name: 'HistoryPage', params: { historydate: singleData } }"
+          >{{ singleData }}</router-link
+        >
       </li>
     </ul>
   </div>
@@ -30,30 +36,17 @@ export default {
     const responseObject = await supabase.functions.invoke("pixelart", {
       body: JSON.stringify(jsonData),
     });
-    /* const responseObject = {
-      data: {
-        dates_to_send: [
-          "2022-04-01",
-          "2022-04-02",
-          "2022-04-03",
-          "2022-04-04",
-          "2022-04-05",
-          "2022-04-06",
-          "2022-04-07",
-          "2022-04-08",
-          "2022-04-09",
-          "2022-04-10",
-        ],
-      },
-      error: null,
-    }; */
     if (
       responseObject != null &&
       responseObject.hasOwnProperty("data") &&
       responseObject.data != null &&
       responseObject.data.hasOwnProperty("dates_to_send")
     ) {
-      this.dateRange = responseObject.data["dates_to_send"];
+      var tempValue = responseObject.data["dates_to_send"];
+      if (tempValue != null) {
+        tempValue.reverse();
+      }
+      this.dateRange = tempValue;
     }
   },
 };

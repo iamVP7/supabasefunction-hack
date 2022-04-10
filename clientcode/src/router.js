@@ -3,6 +3,7 @@ import Home from '@/App.vue';
 import HomePage from '@/HomePage.vue';
 import About from '@/About.vue';
 import History from '@/History.vue';
+import ReadOnlyGrid from '@/components/ReadOnlyGrid.vue';
 
 const routes = [
     {
@@ -19,6 +20,11 @@ const routes = [
         path: '/history',
         name: 'History',
         component: History,
+    },
+    {
+        path: '/h/:historydate',
+        name: 'HistoryPage',
+        component: ReadOnlyGrid,
     }
 ];
 

@@ -8,7 +8,7 @@
         <router-link to="/about">Go to About</router-link>
       </li>
       <li>
-        <router-link to="/history">Previous</router-link>
+        <router-link to="/history">Previously</router-link>
       </li>
     </ul>
   </div>

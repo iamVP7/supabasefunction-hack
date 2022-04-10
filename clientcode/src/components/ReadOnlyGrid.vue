@@ -1,4 +1,5 @@
 <template>
+  <HelloWorld />
   <div class="main_pixel_art_grid">
     <div v-if="readonly">
       <h2>This is the pixel art generated at end of {{ choosenDate }}</h2>
@@ -35,6 +36,7 @@
 
 
 <script>
+import HelloWorld from "./HelloWorld.vue";
 import supabase from "../js/supabaseClient";
 import { ColorPicker } from "vue3-colorpicker";
 
@@ -47,6 +49,7 @@ export default {
   },
   components: {
     ColorPicker,
+    HelloWorld,
   },
   setup() {
     const defaultGridSize = 15;
@@ -58,16 +61,31 @@ export default {
   },
   data() {
     return {
-      readonly: false,
+      readonly: true,
       choosenDate: "",
       pixelArtResponse: {},
     };
   },
   async mounted() {
-    this.readonly = false;
-    var responseObject = await supabase.functions.invoke("pixelart", {
-      body: JSON.stringify({}),
-    });
+    console.log("The id is: " + this.$route.params.historydate);
+    var responseObject = {};
+    if (
+      this.$route != null &&
+      this.$route.params != null &&
+      this.$route.params.historydate != null
+    ) {
+      console.log("We are inside history");
+      this.choosenDate = this.$route.params.historydate;
+      var jsonData = {
+        date_to_fetch: this.$route.params.historydate,
+      };
+
+      responseObject = await supabase.functions.invoke("pixelart", {
+        body: JSON.stringify(jsonData),
+      });
+      this.readonly = true;
+      console.log(responseObject);
+    }
 
     if (
       responseObject != null &&
